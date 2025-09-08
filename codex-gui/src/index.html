@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codex GUI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.0/min/vs/editor/editor.main.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Title Bar (for Windows/Linux) -->
+        <div id="title-bar" class="title-bar">
+            <div class="title-bar-drag">
+                <span class="title">Codex GUI</span>
+            </div>
+            <div class="title-bar-controls">
+                <button id="minimize-btn" class="title-bar-btn">−</button>
+                <button id="maximize-btn" class="title-bar-btn">□</button>
+                <button id="close-btn" class="title-bar-btn">×</button>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div id="main-layout" class="main-layout">
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-tabs">
+                        <button class="sidebar-tab active" data-tab="explorer">
+                            <svg width="16" height="16" viewBox="0 0 16 16">
+                                <path fill="currentColor" d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12A.5.5 0 0 0 9.06 4H12.5A1.5 1.5 0 0 1 14 5.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-10z"/>
+                            </svg>
+                        </button>
+                        <button class="sidebar-tab" data-tab="search">
+                            <svg width="16" height="16" viewBox="0 0 16 16">
+                                <path fill="currentColor" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                        <button class="sidebar-tab" data-tab="codex">
+                            <svg width="16" height="16" viewBox="0 0 16 16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                            </svg>
+                        </button>
+                        <button class="sidebar-tab" data-tab="settings">
+                            <svg width="16" height="16" viewBox="0 0 16 16">
+                                <path fill="currentColor" d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                                <path fill="currentColor" d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.292-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.292c.415.764-.42 1.6-1.185 1.184l-.292-.159a1.873 1.873 0 0 0-2.692 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.693-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.292A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-content">
+                    <!-- Explorer Tab -->
+                    <div id="explorer-panel" class="sidebar-panel active">
+                        <div class="panel-header">
+                            <h3>Explorer</h3>
+                            <div class="panel-actions">
+                                <button id="new-file-btn" class="panel-action-btn" title="New File">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <path fill="currentColor" d="M8.5 1.5A1.5 1.5 0 0 0 7 0H3.5A1.5 1.5 0 0 0 2 1.5v13A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5V5a1.5 1.5 0 0 0-1.5-1.5H8.5zM7 1v4a.5.5 0 0 0 .5.5h4V14.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V1.5a.5.5 0 0 1 .5-.5H7z"/>
+                                        <path fill="currentColor" d="M8 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1V6.5A.5.5 0 0 1 8 7z"/>
+                                    </svg>
+                                </button>
+                                <button id="new-folder-btn" class="panel-action-btn" title="New Folder">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <path fill="currentColor" d="M.5 3l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9.81a2 2 0 0 0 1.991-1.819l.637-7a1.99 1.99 0 0 0-.342-1.311L12.5 3H3.672a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 .002 1H0v2h.5z"/>
+                                        <path fill="currentColor" d="M8 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1V6.5A.5.5 0 0 1 8 7z"/>
+                                    </svg>
+                                </button>
+                                <button id="refresh-explorer-btn" class="panel-action-btn" title="Refresh">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <path fill="currentColor" d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                        <path fill="currentColor" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="file-tree" class="file-tree">
+                            <div class="empty-state">
+                                <p>No folder opened</p>
+                                <button id="open-folder-btn" class="btn btn-primary">Open Folder</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Tab -->
+                    <div id="search-panel" class="sidebar-panel">
+                        <div class="panel-header">
+                            <h3>Search</h3>
+                        </div>
+                        <div class="search-form">
+                            <input type="text" id="search-input" class="search-input" placeholder="Search files...">
+                            <button id="search-btn" class="btn btn-primary">Search</button>
+                        </div>
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+
+                    <!-- Codex Tab -->
+                    <div id="codex-panel" class="sidebar-panel">
+                        <div class="panel-header">
+                            <h3>Codex AI</h3>
+                            <div class="panel-actions">
+                                <button id="codex-login-btn" class="panel-action-btn" title="Login">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <path fill="currentColor" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                    </svg>
+                                </button>
+                                <button id="codex-status-btn" class="panel-action-btn" title="Status">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <path fill="currentColor" d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path fill="currentColor" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="codex-status" class="codex-status">
+                            <div class="status-item">
+                                <span class="status-label">Status:</span>
+                                <span id="status-value" class="status-value">Unknown</span>
+                            </div>
+                        </div>
+                        <div class="codex-chat">
+                            <div id="chat-messages" class="chat-messages"></div>
+                            <div class="chat-input-container">
+                                <textarea id="chat-input" class="chat-input" placeholder="Ask Codex anything..." rows="3"></textarea>
+                                <button id="send-chat-btn" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-panel" class="sidebar-panel">
+                        <div class="panel-header">
+                            <h3>Settings</h3>
+                        </div>
+                        <div id="settings-content" class="settings-content">
+                            <!-- Settings will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resize Handle -->
+            <div id="sidebar-resize" class="resize-handle"></div>
+
+            <!-- Main Content Area -->
+            <div id="content-area" class="content-area">
+                <!-- Tab Bar -->
+                <div id="tab-bar" class="tab-bar">
+                    <div class="tabs">
+                        <!-- Tabs will be dynamically added here -->
+                    </div>
+                    <div class="tab-actions">
+                        <button id="split-editor-btn" class="tab-action-btn" title="Split Editor">
+                            <svg width="16" height="16" viewBox="0 0 16 16">
+                                <path fill="currentColor" d="M1.5 1A1.5 1.5 0 0 0 0 2.5v11A1.5 1.5 0 0 0 1.5 15h6a.5.5 0 0 0 0-1H1.5a.5.5 0 0 1-.5-.5V2.5a.5.5 0 0 1 .5-.5H7a.5.5 0 0 0 0-1H1.5zM8 0a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 8 0zm6.5 1H10a.5.5 0 0 0 0 1h4.5a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H10a.5.5 0 0 0 0 1h4.5a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 14.5 1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editor Area -->
+                <div id="editor-container" class="editor-container">
+                    <div id="welcome-screen" class="welcome-screen">
+                        <div class="welcome-content">
+                            <h1>Welcome to Codex GUI</h1>
+                            <p>A modern, VSCode-inspired interface for the Codex AI coding assistant.</p>
+                            <div class="welcome-actions">
+                                <button id="welcome-open-folder" class="btn btn-primary">Open Folder</button>
+                                <button id="welcome-new-file" class="btn btn-secondary">New File</button>
+                            </div>
+                            <div class="welcome-shortcuts">
+                                <h4>Quick Actions:</h4>
+                                <ul>
+                                    <li><kbd>Ctrl/Cmd + O</kbd> - Open File</li>
+                                    <li><kbd>Ctrl/Cmd + Shift + O</kbd> - Open Folder</li>
+                                    <li><kbd>Ctrl/Cmd + N</kbd> - New File</li>
+                                    <li><kbd>Ctrl/Cmd + `</kbd> - Toggle Terminal</li>
+                                    <li><kbd>Ctrl/Cmd + B</kbd> - Toggle Sidebar</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal/Output Panel -->
+                <div id="bottom-panel" class="bottom-panel">
+                    <div class="panel-header">
+                        <div class="panel-tabs">
+                            <button class="panel-tab active" data-panel="terminal">Terminal</button>
+                            <button class="panel-tab" data-panel="output">Output</button>
+                            <button class="panel-tab" data-panel="problems">Problems</button>
+                        </div>
+                        <div class="panel-controls">
+                            <button id="clear-terminal-btn" class="panel-control-btn" title="Clear Terminal">
+                                <svg width="16" height="16" viewBox="0 0 16 16">
+                                    <path fill="currentColor" d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                    <path fill="currentColor" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </button>
+                            <button id="toggle-terminal-btn" class="panel-control-btn" title="Toggle Terminal">
+                                <svg width="16" height="16" viewBox="0 0 16 16">
+                                    <path fill="currentColor" d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                    <path fill="currentColor" d="M6.146 4.146a.5.5 0 0 1 .708 0L9.207 6.5a.5.5 0 0 1 0 .708L6.854 9.561a.5.5 0 1 1-.708-.708L8.293 6.707 6.146 4.854a.5.5 0 0 1 0-.708zM9.5 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div id="terminal-panel" class="bottom-panel-content active">
+                            <div id="terminal"></div>
+                        </div>
+                        <div id="output-panel" class="bottom-panel-content">
+                            <div id="output-content" class="output-content"></div>
+                        </div>
+                        <div id="problems-panel" class="bottom-panel-content">
+                            <div id="problems-content" class="problems-content">
+                                <div class="empty-state">No problems detected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resize Handle for Bottom Panel -->
+                <div id="bottom-resize" class="resize-handle horizontal"></div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div id="status-bar" class="status-bar">
+            <div class="status-left">
+                <span id="branch-indicator" class="status-item">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <path fill="currentColor" d="M11.75 2.5a.75.75 0 1 0-1.5 0v.6a1.25 1.25 0 0 1-1.25 1.25H6a1.25 1.25 0 0 1-1.25-1.25V2.5a.75.75 0 1 0-1.5 0v.6a2.75 2.75 0 0 0 2.75 2.75h1v4.65a.75.75 0 1 0 1.5 0V5.85h1a2.75 2.75 0 0 0 2.75-2.75V2.5z"/>
+                        <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+                        <circle cx="11" cy="12" r="1.5" fill="currentColor"/>
+                    </svg>
+                    <span id="branch-name">main</span>
+                </span>
+                <span id="file-path" class="status-item"></span>
+            </div>
+            <div class="status-right">
+                <span id="cursor-position" class="status-item">Ln 1, Col 1</span>
+                <span id="file-type" class="status-item">Plain Text</span>
+                <span id="encoding" class="status-item">UTF-8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.0/min/vs/loader.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
