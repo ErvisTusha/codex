@@ -1,0 +1,76 @@
+{
+  "name": "codex-gui",
+  "version": "0.0.0-dev",
+  "description": "Cross-platform GUI for Codex CLI",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "dev": "electron . --dev --no-sandbox",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "clean": "rimraf dist node_modules",
+    "lint": "eslint *.js src/**/*.js",
+    "format": "prettier --write *.js src/**/*.js *.json *.md"
+  },
+  "keywords": ["electron", "gui", "codex", "ai", "code-assistant"],
+  "author": "OpenAI",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "electron": "^33.0.0",
+    "fs-extra": "^11.2.0",
+    "node-pty": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.13.3",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "build": {
+    "appId": "com.openai.codex-gui",
+    "productName": "Codex GUI",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "!node_modules",
+      "!src/**/*.test.js"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "Development"
+    }
+  }
+}
