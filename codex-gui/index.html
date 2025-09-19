@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Codex GUI</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="settings">
+  Theme: <select id="theme"><option value="light">Light</option><option value="vs-dark">Dark</option></select>
+  Font Size: <input id="fontSize" type="number" min="10" max="24" />
+</div>
+<div id="container">
+  <div id="sidebar"></div>
+  <div id="main">
+    <div id="editor"></div>
+    <div id="panel">
+      <div id="terminal"></div>
+      <div id="output"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="renderer.js"></script>
+</body>
+</html>
