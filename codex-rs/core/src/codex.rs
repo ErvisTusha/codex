@@ -595,8 +595,10 @@ impl Session {
                 None => None,
             }
         };
-        if prev_entry.is_some() {
+        if let Some(prev_tx) = prev_entry {
             warn!("Overwriting existing pending approval for sub_id: {event_id}");
+            // Notify the previous approval channel with an abort to prevent hanging
+            prev_tx.send(ReviewDecision::Abort).ok();
         }
 
         let event = Event {
@@ -633,8 +635,10 @@ impl Session {
                 None => None,
             }
         };
-        if prev_entry.is_some() {
+        if let Some(prev_tx) = prev_entry {
             warn!("Overwriting existing pending approval for sub_id: {event_id}");
+            // Notify the previous approval channel with an abort to prevent hanging
+            prev_tx.send(ReviewDecision::Abort).ok();
         }
 
         let event = Event {
@@ -668,6 +672,19 @@ impl Session {
             None => {
                 warn!("No pending approval found for sub_id: {sub_id}");
             }
+        }
+    }
+
+    /// Updates an existing pending approval with a new decision.
+    /// This allows changing approval decisions while a task is in progress.
+    pub async fn update_approval(&self, sub_id: &str, decision: ReviewDecision) -> bool {
+        let mut active = self.active_turn.lock().await;
+        match active.as_mut() {
+            Some(at) => {
+                let mut ts = at.turn_state.lock().await;
+                ts.update_pending_approval(sub_id, decision)
+            }
+            None => false,
         }
     }
 
@@ -1414,6 +1431,12 @@ async fn submission_loop(
                 }
                 other => sess.notify_approval(&id, other).await,
             },
+            Op::ChangeApproval { id, decision } => {
+                let updated = sess.update_approval(&id, decision).await;
+                if !updated {
+                    warn!("Failed to change approval for sub_id: {id} - no pending approval found");
+                }
+            }
             Op::AddToHistory { text } => {
                 let id = sess.conversation_id;
                 let config = config.clone();

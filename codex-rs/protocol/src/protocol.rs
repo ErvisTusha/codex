@@ -143,6 +143,14 @@ pub enum Op {
         decision: ReviewDecision,
     },
 
+    /// Change an existing approval decision while a task is in progress
+    ChangeApproval {
+        /// The id of the submission whose approval we are changing
+        id: String,
+        /// The new decision to apply
+        decision: ReviewDecision,
+    },
+
     /// Append an entry to the persistent cross-session message history.
     ///
     /// Note the entry is not guaranteed to be logged if the user has
